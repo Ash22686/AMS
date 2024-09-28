@@ -1,2 +1,2 @@
 ﻿# AMS
-AMS is a agriculture management system build for th efarmers to keep a track of the information of their fields.
+AMS is a agriculture management system build for th farmers to keep a track of the information of their fields.
