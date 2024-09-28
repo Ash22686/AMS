@@ -1,0 +1,78 @@
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import About from "./pages/About";
+import Faqs from "./pages/Faqs";
+import Layout from './pages/Layout';
+import CropRecommendation from "./pages/CropRecommendation";
+import Profile from './pages/Profile';
+import FarmData from './pages/FarmData';
+import IrrigationData from "./pages/IrrigationData";
+import SoilData from "./pages/SoilData";
+import WeatherData from "./pages/WeatherData";
+import ViewData from "./pages/ViewData";
+import ViewFarm from "./pages/ViewFarm";
+import ViewProfile from "./pages/ViewProfile";
+import ViewSoil from "./pages/ViewSoil";
+import ViewIrrigation from "./pages/ViewIrrigation";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = (token) => {
+    localStorage.setItem("token", token);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
+
+  const checkAuthentication = () => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  };
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
+  const ProtectedRoute = ({ element: Component }) => {
+    return isAuthenticated ? Component : <Navigate to="/login" />;
+  };
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route
+          path="/"
+          element={<ProtectedRoute element={<Home onLogout={handleLogout} />} />}
+        />
+        <Route path="/about" element={<ProtectedRoute element={<About />} />} />
+        <Route path="/faqs" element={<ProtectedRoute element={<Faqs />} />} />
+        <Route path="/CropRecommendation" element={<ProtectedRoute element={<CropRecommendation />} />} />
+
+        <Route path="/layout" element={<ProtectedRoute element={<Layout />} />}>
+          <Route index element={<Profile />} /> {/* Set Profile as the index route */}
+          <Route path="Profile" element={<Profile />} />
+          <Route path="IrrigationData" element={<IrrigationData />} />
+          <Route path="SoilData" element={<SoilData />} />
+          <Route path="WeatherData" element={<WeatherData />} />
+          <Route path="farmdata" element={<FarmData />} />
+          <Route path="ViewData" element={<ViewData />} />
+          <Route path="ViewProfile" element={<ViewProfile />} />
+          <Route path="ViewIrrigation" element={<ViewIrrigation />} />
+          <Route path="ViewSoil" element={<ViewSoil />} />
+          <Route path="ViewFarm" element={<ViewFarm />} />
+
+          {/* Add other nested routes here */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
