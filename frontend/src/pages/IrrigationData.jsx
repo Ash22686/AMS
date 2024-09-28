@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
-import './FarmData.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./FarmData.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function IrrigationData() {
   // Irrigation Data State
-  const [farmName, setFarmName] = useState('');
-  const [cropName, setCropName] = useState('');
-  const [irrigationDate, setIrrigationDate] = useState('');
-  const [irrigationQuantity, setIrrigationQuantity] = useState('');
+  const [farmNames, setFarmNames] = useState([]); // To store farm names
+  const [farmName, setFarmName] = useState("");
+  const [cropName, setCropName] = useState("");
+  const [irrigationDate, setIrrigationDate] = useState("");
+  const [irrigationQuantity, setIrrigationQuantity] = useState("");
+
+  useEffect(() => {
+    const fetchFarmNames = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/farms/names"); // Adjusted endpoint for fetching farm names
+        setFarmNames(response.data); // Assuming the response data is an array of farm names
+      } catch (error) {
+        console.error("Error fetching farm names:", error);
+      }
+    };
+
+    fetchFarmNames();
+  }, []);
 
   const handleIrrigationSubmit = async (e) => {
     e.preventDefault();
@@ -21,38 +37,34 @@ function IrrigationData() {
     };
 
     try {
-      // Send the data to the backend using fetch
-      const response = await fetch('http://localhost:8080/irrigation', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/irrigation", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(irrigationData),
       });
 
-      // Parse the JSON response
       const result = await response.json();
 
-      // Handle the success or error response
       if (response.ok) {
-        toast.success(result.message);  // Display success message
-        // Reset form fields to show placeholders again
-        setFarmName('');
-        setCropName('');
-        setIrrigationDate('');
-        setIrrigationQuantity('');
+        toast.success(result.message);
+        // Reset form fields
+        setFarmName("");
+        setCropName("");
+        setIrrigationDate("");
+        setIrrigationQuantity("");
       } else {
-        toast.error(result.error);  // Display error message
+        toast.error(result.error);
       }
     } catch (error) {
-      console.error('Error submitting irrigation data:', error);
+      console.error("Error submitting irrigation data:", error);
     }
   };
 
   return (
     <div className="farm-data">
       <ToastContainer autoClose={3000} />
-      {/* Irrigation Data Form */}
       <h1 className="bgclr3 h">Irrigation Data</h1>
       <div className="min-h-screen w-full flex justify-center">
         <div className="w-full max-w-4xl">
@@ -60,18 +72,33 @@ function IrrigationData() {
             onSubmit={handleIrrigationSubmit}
             className="grid max-w-4xl gap-4 py-10 px-10 sm:grid-cols-2 bg-white rounded-md mt-16"
           >
-            {/* Farm Name */}
+            {/* Farm Name Dropdown */}
             <div className="grid mb-4">
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
-                <input
-                  type="text"
+                <select
                   name="farmName"
                   id="farmName"
                   value={farmName}
                   onChange={(e) => setFarmName(e.target.value)}
-                  className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
-                  placeholder="Farm Name"
-                />
+                  className={`block w-full p-0 text-base ${
+                    farmName === "" ? "text-gray-400" : "text-gray-900"
+                  } placeholder-gray-400 focus:outline-none focus:border-none`}
+                  required
+                >
+                  <option value="" disabled className="text-gray-400">
+                    Farm Name
+                  </option>
+                  {/* Placeholder option */}
+                  {farmNames.length > 0 ? (
+                    farmNames.map((farm, index) => (
+                      <option key={index} value={farm}>
+                        {farm}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No farms available</option> // Handle the case when there are no farms
+                  )}
+                </select>
               </div>
             </div>
 
@@ -86,6 +113,7 @@ function IrrigationData() {
                   onChange={(e) => setCropName(e.target.value)}
                   className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
                   placeholder="Crop Name"
+                  required
                 />
               </div>
             </div>
@@ -110,13 +138,14 @@ function IrrigationData() {
             <div className="grid mb-4">
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
                 <input
-                  type="text"
+                  type="number"
                   name="irrigationQuantity"
                   id="irrigationQuantity"
                   value={irrigationQuantity}
                   onChange={(e) => setIrrigationQuantity(e.target.value)}
                   className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
                   placeholder="Irrigation Quantity (in liters)"
+                  required
                 />
               </div>
             </div>

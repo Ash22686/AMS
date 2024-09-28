@@ -130,6 +130,22 @@ app.get("/farms", (req, res) => {
   });
 });
 
+
+// GET route to fetch all farm names for dropdown
+app.get("/farms/names", (req, res) => {
+  const query = "SELECT farmname FROM farms";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error", details: err.message });
+    }
+    // Extract only the farm names from the results
+    const farmNames = results.map(farm => farm.farmname);
+    res.status(200).json(farmNames);
+  });
+});
+
+
 // Update farm route
 app.put("/farm/:id", (req, res) => {
   const farmId = req.params.id;

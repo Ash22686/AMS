@@ -1,61 +1,73 @@
-import React, { useState } from 'react';
-import './FarmData.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useEffect, useState } from "react";
+import "./FarmData.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function SoilData() {
   // Soil Data State
-  const [ph, setPh] = useState('');
-  const [soiltype, setSoiltype] = useState('');
-  const [moisture, setMoisture] = useState('');
-  const [farm, setFarm] = useState('');
+  const [ph, setPh] = useState("");
+  const [soilType, setSoilType] = useState("");
+  const [moisture, setMoisture] = useState("");
+  const [farmNames, setFarmNames] = useState([]); // To store farm names
+  const [farmName, setFarmName] = useState("");
 
-  // Soil Data Submission
+  useEffect(() => {
+    const fetchFarmNames = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/farms/names"); // Adjusted endpoint for fetching farm names
+        setFarmNames(response.data); // Assuming the response data is an array of farm names
+      } catch (error) {
+        console.error("Error fetching farm names:", error);
+      }
+    };
+
+    fetchFarmNames();
+  }, []);
+
   const handleSoilSubmit = (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
-    if (!ph || !soiltype || !moisture || !farm) {
-      console.log('Form validation failed.');
-      return toast.error('All fields are required.');
+    if (!ph || !soilType || !moisture || !farmName) {
+      return toast.error("All fields are required.");
     }
 
-    console.log({
+    const soilData = {
       ph,
-      soiltype,
+      soilType,
       moisture,
-      farm,
-    });
+      farmName,
+    };
 
-    // Perform the fetch to submit data
-    fetch('http://localhost:8080/soildata', {
-      method: 'POST',
+    fetch("http://localhost:8080/soildata", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ph, soiltype, moisture, farm }),
+      body: JSON.stringify(soilData),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Success:', data);
-        toast.success('Soil data submitted successfully!');
-        
-        // Reset form fields to show placeholders again
-        setPh('');
-        setSoiltype('');
-        setMoisture('');
-        setFarm('');
+        if (data.success) {
+          toast.success("Soil data submitted successfully!");
+          // Reset form fields
+          setPh("");
+          setSoilType("");
+          setMoisture("");
+          setFarmName("");
+        } else {
+          toast.error(data.error);
+        }
       })
       .catch((error) => {
-        console.error('Error:', error);
-        toast.error('Error submitting soil data.');
+        console.error("Error:", error);
+        toast.error("Error submitting soil data.");
       });
   };
 
   return (
     <div className="farm-data">
-      <ToastContainer autoClose= {3000}/>
-      {/* Soil Data Form */}
+      <ToastContainer autoClose={3000} />
       <h1 className="bgclr3 h">Soil Data</h1>
       <div className="min-h-screen w-full flex justify-center">
         <div className="w-full max-w-4xl">
@@ -63,18 +75,33 @@ function SoilData() {
             onSubmit={handleSoilSubmit}
             className="grid max-w-4xl gap-4 py-10 px-10 sm:grid-cols-2 bg-white rounded-md mt-16"
           >
-            {/* Farm Name */}
+            {/* Farm Name Dropdown */}
             <div className="grid mb-4">
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
-                <input
-                  type="text"
-                  name="farm"
-                  id="farm"
-                  value={farm}
-                  onChange={(e) => setFarm(e.target.value)}
-                  className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
-                  placeholder="Farm Name"
-                />
+                <select
+                  name="farmName"
+                  id="farmName"
+                  value={farmName}
+                  onChange={(e) => setFarmName(e.target.value)}
+                  className={`block w-full p-0 text-base ${
+                    farmName === "" ? "text-gray-400" : "text-gray-900"
+                  } placeholder-gray-400 focus:outline-none focus:border-none`}
+                  required
+                >
+                  <option value="" disabled className="text-gray-400">
+                    Farm Name
+                  </option>
+                  {/* Placeholder option */}
+                  {farmNames.length > 0 ? (
+                    farmNames.map((farm, index) => (
+                      <option key={index} value={farm}>
+                        {farm}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No farms available</option> // Handle the case when there are no farms
+                  )}
+                </select>
               </div>
             </div>
 
@@ -83,42 +110,45 @@ function SoilData() {
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
                 <input
                   type="text"
-                  name="soiltype"
-                  id="soiltype"
-                  value={soiltype}
-                  onChange={(e) => setSoiltype(e.target.value)}
+                  name="soilType"
+                  id="soilType"
+                  value={soilType}
+                  onChange={(e) => setSoilType(e.target.value)}
                   className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
                   placeholder="Soil Type"
+                  required
                 />
               </div>
             </div>
 
-            {/* Soil PH */}
+            {/* pH Level */}
             <div className="grid mb-4">
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
                 <input
-                  type="text"
+                  type="number"
                   name="ph"
                   id="ph"
                   value={ph}
                   onChange={(e) => setPh(e.target.value)}
                   className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
-                  placeholder="Soil PH"
+                  placeholder="PH Level"
+                  required
                 />
               </div>
             </div>
 
-            {/* Soil Moisture */}
+            {/* Moisture Content */}
             <div className="grid mb-4">
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
                 <input
-                  type="text"
+                  type="number"
                   name="moisture"
                   id="moisture"
                   value={moisture}
                   onChange={(e) => setMoisture(e.target.value)}
                   className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
-                  placeholder="Soil Moisture"
+                  placeholder="Moisture Content (%)"
+                  required
                 />
               </div>
             </div>
