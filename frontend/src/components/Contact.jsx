@@ -71,7 +71,7 @@ function Contact() {
         </div>
 
         <div className='contact_content flex-col'>
-          <div className="max-w-sm space-y-3 w-96">
+          <div className="max-w-sm space-y-3 w-[85vw]">
             <h1 className='bgclr h'>CONTACT US</h1>
             <input
               type="text"

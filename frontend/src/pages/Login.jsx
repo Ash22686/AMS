@@ -64,18 +64,21 @@ function Login({ onLogin }) {
         body: JSON.stringify(loginData),
       });
   
-      const data = await response.json(); // Parse the JSON response
+      const data = await response.json();
+      console.log(data);
+       // Parse the JSON response
       if (response.ok) {
         console.log("Login successful:", data.token);
+        localStorage.setItem("token", data.token); // Store JWT token in localStorage
         toast.success("Login Successful!"); // Show success toast
   
-        localStorage.setItem("token", data.token); // Store JWT token in localStorage
-        onLogin(); // Call onLogin to update authentication state
+            onLogin(data.token); // Call onLogin to update authentication state
   
         // Delay navigation to allow the toast to appear
-        setTimeout(() => {
-          navigate("/"); // Redirect to home page
-        }, 1000); // Delay redirection by 1.5 seconds
+console.log("navigating to Login");
+
+          navigate("/home"); // Redirect to home page
+        
       } else {
         console.error("Login failed:", data.error || "Unknown error");
         toast.error(data.error || "Login failed!"); // Show error toast
@@ -88,6 +91,7 @@ function Login({ onLogin }) {
   
   
   return (
+    <div className="flex flex-col justify-center items-center w-screen h-screen">
     <div className={`container ${isSignUp ? "active" : ""}`}>
       <ToastContainer autoClose = {1000}/>
       <div className="form-container sign-up">
@@ -95,16 +99,16 @@ function Login({ onLogin }) {
           <h1>Create Account</h1>
           <div className="social-icons">
             <Link to="#" className="icon">
-              <i className="fa-brands fa-google"></i>
+              <i className="fa-brands fa-google"/>
             </Link>
             <Link to="#" className="icon">
-              <i className="fa-brands fa-facebook-f"></i>
+              <i className="fa-brands fa-facebook-f"/>
             </Link>
             <Link to="#" className="icon">
-              <i className="fa-brands fa-github"></i>
+              <i className="fa-brands fa-github"/>
             </Link>
             <Link to="#" className="icon">
-              <i className="fa-brands fa-linkedin"></i>
+              <i className="fa-brands fa-linkedin"/>
             </Link>
           </div>
           <span>or use your email for registration</span>
@@ -138,16 +142,16 @@ function Login({ onLogin }) {
           <h1>Sign In</h1>
           <div className="social-icons">
             <Link to="#" className="icon">
-              <i className="fa-brands fa-google"></i>
+              <i className="fa-brands fa-google"/>
             </Link>
             <Link to="#" className="icon">
-              <i className="fa-brands fa-facebook-f"></i>
+              <i className="fa-brands fa-facebook-f"/>
             </Link>
             <Link to="#" className="icon">
-              <i className="fa-brands fa-github"></i>
+              <i className="fa-brands fa-github"/>
             </Link>
             <Link to="#" className="icon">
-              <i className="fa-brands fa-linkedin"></i>
+              <i className="fa-brands fa-linkedin"/>
             </Link>
           </div>
           <span>or use your email</span>
@@ -196,6 +200,7 @@ function Login({ onLogin }) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

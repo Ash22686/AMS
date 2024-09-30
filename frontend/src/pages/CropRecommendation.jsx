@@ -6,6 +6,14 @@ import './Yield.css'
 import 'react-toastify/dist/ReactToastify.css';
 
 function CropRecommendation() {
+
+
+
+  useEffect(() => {
+    if(!localStorage.getItem("token")) window.location.replace("/login");
+
+  }, []);
+
   // Crop Data State
   const [nitrogen, setNitrogen] = useState("");
   const [phosphorus, setPhosphorus] = useState("");
@@ -25,6 +33,7 @@ function CropRecommendation() {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (prediction) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -78,6 +87,7 @@ function CropRecommendation() {
         if (data.prediction) {
           setPrediction(data.prediction); // Set the prediction result
         } else if (data.error) {
+          // biome-ignore lint/style/useTemplate: <explanation>
           alert("Error: " + data.error);
         }
       })
@@ -105,7 +115,7 @@ function CropRecommendation() {
     <div>
       <ToastContainer autoClose = {3000}/>
       <div className={`farm-data ${prediction ? 'blur-sm' : ''}`}>
-        <div className="mt-48 w-screen pl-20 pr-8">
+        <div className="w-screen pl-20 pr-8">
           <Navbar />
         </div>
         {/* Personal Data Form */}
@@ -301,7 +311,8 @@ function CropRecommendation() {
             className="bg-white text-black p-8 rounded-lg shadow-md w-96 relative"
             ref={modalRef}
           >
-            <button
+            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+<button
               className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
               onClick={closeResult}
             >

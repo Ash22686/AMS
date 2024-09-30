@@ -17,14 +17,9 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body {
+body{
     background-color: var(--secondary-color);
     background: linear-gradient(to right, var(--background-color), var(--secondary-color));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
 }
 
 .container {

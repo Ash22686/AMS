@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Services from '../components/Services';
 import Footer from '../components/Footer';
 import Contact from '../components/Contact';
+import { useNavigate } from 'react-router-dom';
 
 
 function Home() {
@@ -18,7 +19,12 @@ function Home() {
   //   navigate("/login");
   // };
 
+  
+  
   useEffect(() => {
+    
+    console.log(localStorage.getItem("token"));
+     if(!localStorage.getItem("token")) window.location.replace("/login");
     // Add event listeners after the component mounts
     const container = document.getElementById("container");
     const registerBtn = document.getElementById("register");
@@ -53,10 +59,11 @@ function Home() {
     <div>
       <div id="main">
         <div id="page1">
-          <img src="bg.jpg" alt="" />
+          
           <Navbar />
 
           <div id="flex">
+          <img src="bg.jpg" alt="" />
             <h1 id="center">
               AGRICULTURE <br /> MANAGEMENT <br /> SYSTEM
             </h1>
@@ -66,12 +73,12 @@ function Home() {
               muted
               src="videoplayback.webm"
               className="video-container"
-            ></video>
+            />
           </div>
           
         </div>
-        <div><Services /></div>
-        <div><Contact /></div>
+        <div className='mb-20'><Services /></div>
+        <div className='mb-20'><Contact /></div>
         <div><Footer /></div>
       </div>
     </div>

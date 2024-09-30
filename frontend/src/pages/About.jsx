@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './About.css'
 import Cards from '../components/Cards';
 import Navbar from '../components/Navbar';
@@ -8,6 +8,13 @@ import Footer from '../components/Footer';
 
 
 function About() {
+
+
+    useEffect(()=>{
+      if(!localStorage.getItem("token")) window.location.replace("/login");
+
+    },[])
+
   return (
     <>
 

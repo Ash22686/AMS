@@ -67,8 +67,8 @@ function Footer() {
 
         <hr className="my-6 border-black sm:mx-auto" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <div className="flex mt-4 gap-4 sm:justify-center sm:mt-0">
-            <p className="text-center ml-80">&copy; 2024 Farm Fusion | All Rights Reserved</p>
+          <div className="flex mt-4 gap-4 sm:justify-center sm:mt-0 w-screen">
+            <p >&copy; 2024 Farm Fusion | All Rights Reserved</p>
           </div>
         </div>
       </div>

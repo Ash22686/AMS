@@ -20,7 +20,7 @@
           <h1>FARM FUSION</h1>
           <div id="nav2">
             <h4>
-              <Link to="/">Home</Link>
+              <Link to="/home">Home</Link>
             </h4>
             <h4>
               <Link to="/layout">Profile</Link>
@@ -32,7 +32,7 @@
               <Link to="/Faqs">Faqs</Link>
             </h4>
             <h4>
-              <Link to="/login" onClick={handleLogout}>
+              <Link to="/" onClick={handleLogout}>
                 Log Out
               </Link>
             </h4>

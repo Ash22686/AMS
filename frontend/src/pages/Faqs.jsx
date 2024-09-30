@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Faqs.css';
 import Navbar from '../components/Navbar'
 
 function Faqs() {
+
+
+  useEffect(() =>{
+    if(!localStorage.getItem("token")) window.location.replace("/login");
+
+  },[]);
+
+
   // State to manage which FAQ is open
   const [openIndex, setOpenIndex] = useState(null);
 

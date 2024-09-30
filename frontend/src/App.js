@@ -18,6 +18,11 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function App() {
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogin = (token) => {
@@ -32,12 +37,11 @@ function App() {
 
   const checkAuthentication = () => {
     const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+    if(token)setIsAuthenticated(true);
+    else setIsAuthenticated(false);
   };
 
-  useEffect(() => {
-    checkAuthentication();
-  }, []);
+  
 
   const ProtectedRoute = ({ element: Component }) => {
     return isAuthenticated ? Component : <Navigate to="/login" />;
@@ -46,14 +50,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/" element={<Login onLogin={handleLogin} />} />
         <Route
-          path="/"
-          element={<ProtectedRoute element={<Home onLogout={handleLogout} />} />}
+          path="/home"
+          element={<Home onLogout={handleLogout} />}
         />
-        <Route path="/about" element={<ProtectedRoute element={<About />} />} />
-        <Route path="/faqs" element={<ProtectedRoute element={<Faqs />} />} />
-        <Route path="/CropRecommendation" element={<ProtectedRoute element={<CropRecommendation />} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/faqs" element={<Faqs />}/>
+        <Route path="/CropRecommendation" element={<CropRecommendation />} />
 
         <Route path="/layout" element={<ProtectedRoute element={<Layout />} />}>
           <Route index element={<Profile />} /> {/* Set Profile as the index route */}
