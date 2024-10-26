@@ -1,0 +1,17 @@
+.img1{
+    position: absolute;
+    z-index: -1;
+    top: 20%;
+    left: -3%;
+    
+}
+
+.img2{
+    position:absolute;
+    z-index: -1;
+    right: 0;
+    top:70%;
+    font-weight: 50%;
+    height: 50%;
+   
+}

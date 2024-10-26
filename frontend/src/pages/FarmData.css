@@ -1,0 +1,40 @@
+.h{
+    text-align: center;
+    margin-top: 30px;
+    font-size: 3vw;
+}
+
+.h1{
+    text-align: center;
+    margin-top: -10vw;
+    font-size: 3vw;
+
+}
+
+.space{
+    text-align: center;
+    margin-top: -17vw;
+    font-size: 3vw;
+}
+
+.space1{
+    text-align: center;
+    margin-top: -17vw;
+    font-size: 3vw;
+}
+
+.bgclr3{
+    background: url('C:\Users\Ashish\V S\AMS\frontend\public\sun.jpg'); /* Replace with your image path */
+    background-size: cover; /* Ensures the image covers the entire text */
+    background-position: 0; /* Centers the image inside the text */
+    background-clip: text; /* Clips the image to the text (for Webkit browsers like Chrome, Safari) */
+    padding-left: 5px;
+    -webkit-text-fill-color: transparent; /*sures the text is filled with the background image */
+}
+
+
+
+.farm-data{
+    overflow: hidden;
+    
+}

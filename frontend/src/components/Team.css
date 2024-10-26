@@ -1,0 +1,13 @@
+.margin{
+    margin-top: 20px;
+    margin-left: 50%;
+}
+
+.bgclr{
+    background: url('C:\Users\Ashish\V S\AMS\frontend\public\sun.jpg'); /* Replace with your image path */
+    background-size: cover; /* Ensures the image covers the entire text */
+    background-position: 90px; /* Centers the image inside the text */
+    background-clip: text; /* Clips the image to the text (for Webkit browsers like Chrome, Safari) */
+    padding-left: 5px;
+    -webkit-text-fill-color: transparent; /*sures the text is filled with the background image */
+}

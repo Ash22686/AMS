@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+}
+
+.bgcolor{
+     /* margin-top: 125vw; */
+    background-color: #FCFCFC;
+    overflow: hidden;
+}
+
+
+.line {
+    background-color: #1F1E17;
+    width: 100%;
+    height: 20vw;
+    position: relative; /* Use relative to prevent elements from overlapping */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+
+.line h1 {
+    color: white;
+    background-color: #1F1E17;
+    font-size: 5vw;
+    text-align: left;
+    margin-left: 30px;
+    padding: 20px 30px;
+    position: relative; /* So it's not affected by the flexbox parent */
+}
+
+.line img {
+    width: 50vw;
+    margin-top: 8vw;
+    z-index: 2;
+    filter: drop-shadow(0 -6mm 2mm rgb(9, 9, 9));
+    
+}
+
+.lineimg {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.aboutinfo {
+    height: 20vw;
+    position: relative;
+    background-color: #FCFCFC;
+    align-items: center;
+    
+}
+
+.aboutinfo h1 {
+    color: transparent;
+    z-index: 1;
+    position: absolute;
+    margin-left: 32%;
+    text-align: center;
+    padding: 20px 30px;
+    font-size: 5vw;
+    background: url('C:\Users\Ashish\V S\AMS\frontend\public\sun.jpg'); /* Replace with your image path */
+    background-size: cover; /* Ensures the image covers the entire text */
+    background-position: center; /* Centers the image inside the text */
+    background-clip: text; /* Clips the image to the text (for Webkit browsers like Chrome, Safari) */
+    -webkit-text-fill-color: transparent; /*sures the text is filled with the background image */
+    
+}
+
+.relative-container {
+    position: relative;
+}
+
+.wheat {
+    position: relative;
+    top: 0;
+    width: 100%;
+   
+}
+
+
+.navbar-about {
+    z-index: 2;
+    margin-left: 2vw;
+}
+
+.cards-about {
+    margin-top: 20vw;
+}
+
