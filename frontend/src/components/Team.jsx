@@ -4,28 +4,28 @@ import './Team.css';
 const teamMembers = [
   {
     name: 'Aryan Jha',
-    role: 'Roll Number : 29',
+    role: 'PRN : 12310601',
     image: 'profile.webp',
   },
   {
     name: 'Ashish Kumar',
-    role: 'Roll Number : 30',
+    role: 'PRN : 12311937',
     image: 'profile.webp',
   },
   {
     name: 'Prasad Bandewar',
-    role: 'Roll Number: 50',
+    role: 'PRN : 12311462',
     image: 'profile.webp',
   },
 
   {
     name: 'Sejal Band',
-    role: 'Roll Number : 49',
+    role: 'PRN : 12311088',
     image: 'profile.webp',
   },
   {
     name: 'Venugopal Baheti',
-    role: 'Roll Number : 47',
+    role: 'PRN : 12311977',
     image: 'profile.webp',
   }
 ];
@@ -45,9 +45,12 @@ function Team() {
 
           {/* Right Column: Team Members */}
           <div className="pl-28 mt-9"> {/* Added more padding to the left */}
+            {/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
+            {/* biome-ignore lint/a11y/noRedundantRoles: <explanation> */}
             <ul role="list" className="space-y-12">
               {teamMembers.map((member, index) => (
-                <li key={index}>
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+               <li key={index}>
                   <div className="flex items-center gap-x-7">
                     <img className="h-16 w-16 rounded-full" src={member.image} alt={`${member.name} profile`} />
                     <div>
