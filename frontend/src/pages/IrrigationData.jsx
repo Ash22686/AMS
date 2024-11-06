@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 function IrrigationData() {
   // Irrigation Data State
   const [farmNames, setFarmNames] = useState([]); // To store farm names
+  const [cropNames, setCropNames] = useState([]); // To store crops for the selected farm
   const [farmName, setFarmName] = useState("");
   const [cropName, setCropName] = useState("");
   const [irrigationDate, setIrrigationDate] = useState("");
@@ -14,10 +15,11 @@ function IrrigationData() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    // Fetch farm names on component mount
     const fetchFarmNames = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/farms/names"); // Adjusted endpoint for fetching farm names
-        setFarmNames(response.data); // Assuming the response data is an array of farm names
+        const response = await axios.get("http://localhost:8080/farms/names");
+        setFarmNames(response.data);
       } catch (error) {
         console.error("Error fetching farm names:", error);
       }
@@ -26,10 +28,29 @@ function IrrigationData() {
     fetchFarmNames();
   }, []);
 
+  // Fetch crops for the selected farm
+  useEffect(() => {
+    const fetchCropNames = async () => {
+      if (farmName) {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/farms/${farmName}/crops`
+          );
+          setCropNames(response.data);
+        } catch (error) {
+          console.error("Error fetching crop names:", error);
+        }
+      } else {
+        setCropNames([]);
+      }
+    };
+
+    fetchCropNames();
+  }, [farmName]);
+
   const handleIrrigationSubmit = async (e) => {
     e.preventDefault();
 
-    // Create the irrigation data object
     const irrigationData = {
       farmName,
       cropName,
@@ -42,7 +63,7 @@ function IrrigationData() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(irrigationData),
       });
@@ -51,7 +72,6 @@ function IrrigationData() {
 
       if (response.ok) {
         toast.success(result.message);
-        // Reset form fields
         setFarmName("");
         setCropName("");
         setIrrigationDate("");
@@ -90,33 +110,47 @@ function IrrigationData() {
                   <option value="" disabled className="text-gray-400">
                     Farm Name
                   </option>
-                  {/* Placeholder option */}
                   {farmNames.length > 0 ? (
                     farmNames.map((farm, index) => (
-                      <option key={index} value={farm}>
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                          <option key={index} value={farm}>
                         {farm}
                       </option>
                     ))
                   ) : (
-                    <option value="">No farms available</option> // Handle the case when there are no farms
+                    <option value="">No farms available</option>
                   )}
                 </select>
               </div>
             </div>
 
-            {/* Crop Name */}
+            {/* Crop Name Dropdown */}
             <div className="grid mb-4">
               <div className="bg-white flex min-h-[65px] justify-center rounded-md border border-gray-300 px-3">
-                <input
-                  type="text"
+                <select
                   name="cropName"
                   id="cropName"
                   value={cropName}
                   onChange={(e) => setCropName(e.target.value)}
-                  className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
-                  placeholder="Crop Name"
+                  className={`block w-full p-0 text-base ${
+                    cropName === "" ? "text-gray-400" : "text-gray-900"
+                  } placeholder-gray-400 focus:outline-none focus:border-none`}
                   required
-                />
+                >
+                  <option value="" disabled className="text-gray-400">
+                    Crop Name
+                  </option>
+                  {cropNames.length > 0 ? (
+                    cropNames.map((crop, index) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        <option key={index} value={crop}>
+                        {crop}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No crops available</option>
+                  )}
+                </select>
               </div>
             </div>
 
@@ -132,6 +166,7 @@ function IrrigationData() {
                   value={irrigationDate}
                   onChange={(e) => setIrrigationDate(e.target.value)}
                   className="block w-full p-0 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:border-none"
+                  required
                 />
               </div>
             </div>
@@ -152,7 +187,7 @@ function IrrigationData() {
               </div>
             </div>
 
-            {/* Submit Button for Irrigation Data */}
+            {/* Submit Button */}
             <div className="flex justify-center items-center w-full col-span-2">
               <button
                 type="submit"

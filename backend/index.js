@@ -264,6 +264,24 @@ app.delete("/farm/:id", (req, res) => {
   });
 });
 
+// GET route to fetch crops for a selected farm
+app.get("/farms/:farmName/crops", (req, res) => {
+  const { farmName } = req.params;
+  const query = "SELECT cropPlanted FROM farms WHERE farmname = ?";
+  
+  db.query(query, [farmName], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    
+    const crops = results.map((crop) => crop.cropPlanted);
+    res.status(200).json(crops);
+  });
+});
+
+
+
 // Irrigation Data Submission Route
 app.post("/irrigation", authenticateToken, (req, res) => {
   const { farmName, cropName, irrigationDate, irrigationQuantity } = req.body;
