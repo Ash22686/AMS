@@ -50,7 +50,7 @@ Farm Fusion is an agriculture management system designed to help farmers manage 
 
 
 
-Create this database to store the information.
+## Create this database to store the information.
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
