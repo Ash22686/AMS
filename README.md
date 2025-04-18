@@ -42,6 +42,17 @@ Farm Fusion is an agriculture management system designed to help farmers manage 
    ```
    ```bash
    cd ./frontend
+   npm install
+   npm run dev
+   ```
+   ```bash
+   cd ./backend
+   npm install
+   npm start
+   ```
+   ```bash
+   cd ./backend
+   python app.py
    ```
 
 ## Create this database to store the information.
