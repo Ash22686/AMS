@@ -39,13 +39,8 @@ Farm Fusion is an agriculture management system designed to help farmers manage 
 1. **Clone the Repository**:
    ```bash
    git clone <repository-url>
-   cd farm-fusion
-
-
-
-
-
-
+   ```
+   cd ./frontend
 
 ## Create this database to store the information.
 
