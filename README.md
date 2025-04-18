@@ -1,8 +1,5 @@
 # Agriculture Management System
-# Farm Management System
-# Farm Fusion
-# Agriculture
-# Farming
+
 
 ## Overview
 Farm Fusion is an agriculture management system designed to help farmers manage essential aspects of farm operations, including farm registration, crop management, soil monitoring, irrigation logging, weather tracking, and crop prediction. The platform offers easy-to-use tools for storing and accessing important farm data, improving productivity, and supporting informed decision-making.
